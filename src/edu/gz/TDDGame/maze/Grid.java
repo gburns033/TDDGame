@@ -10,7 +10,7 @@ public class Grid {
 		this.rows = rows;
 	}
 
-	public Object getRows() {
+	public ArrayList<Row> getRows() {
 		return rows;
 	}
 
