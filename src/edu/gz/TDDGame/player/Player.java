@@ -19,4 +19,12 @@ public class Player {
 	public Cell getCurrentCell() {
 		return this.cell;
 	}
+	
+	public void setCurrentRow(Row row) {
+		this.row = row;
+	}
+	
+	public void setCurrentCell(Cell cell) {
+		this.cell = cell;
+	}
 }
