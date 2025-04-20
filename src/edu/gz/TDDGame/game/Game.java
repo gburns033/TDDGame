@@ -25,52 +25,52 @@ public class Game {
 	}
 
 	public boolean play(Movement movement, Player player) {
+		Row row = player.getCurrentRow();
+		int colIndex = row.getIndexOfCell(player.getCurrentCell());
+		Integer rowIndex = grid.getIndexOfRow(row);
+		
 		switch (movement) {
-			case UP:
-				for (int i = 0; i < grid.getRows().size(); i++) {
-					if (player.getCurrentRow().equals(grid.getRows().get(i))) {
-						if (grid.getRows().get(i + 1) != null || player.getCurrentCell().getUp() != CellComponents.WALL) {
-							player.setCurrentRow(grid.getRows().get(i));
-							
-							return true;
-						} else {
-							return false;
-						}
-					}
+			case UP:				
+				if (rowIndex != null && rowIndex > 0) {
+					player.setCurrentRow(grid.getRowAt(rowIndex - 1));
+					player.setCurrentCell(null);
+					
+					return true;
 				}
-				break;
-			case DOWN:
-				for (int i = 0; i < grid.getRows().size(); i++) {
-					if (player.getCurrentRow().equals(grid.getRows().get(i))) {
-						if (grid.getRows().get(i - 1) != null || player.getCurrentCell().getDown() != CellComponents.WALL) {
-							player.setCurrentRow(grid.getRows().get(i));
-							
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
-				break;
-			case LEFT:
-				int gridRowSize = grid.getRows().get(0).getCells().size();
-				int playerColumn = grid.getRows()
 				
-				for (int i = 0; i < grid.getRows().size(); i++) {
-					if (player.getCurrentRow().equals(grid.getRows().get(i))) {
-						if (grid.getRows().get(i - 1) == null || player.getCurrentCell().getDown() != CellComponents.WALL) {
-							return false;
-						} else {
-							return true;
-						}
-					}
+				return false;
+			case DOWN:
+				if (rowIndex != null && rowIndex < row.getRowSize()) {
+					player.setCurrentRow(grid.getRowAt(rowIndex + 1));
+					player.setCurrentCell(null);
+					
+					return true;
 				}
+				
+				return false;
+			case LEFT:
+				if (colIndex > 0) {
+					player.setCurrentCell(row.getCellAt(colIndex - 1));
+
+					return true;
+				}
+				
+				return false;
+			case RIGHT:				
+				if (colIndex < row.getCells().size()) {
+					player.setCurrentCell(row.getCellAt(colIndex + 1));
+
+					return true;
+				}
+				
+				return false;
+			default:
+				return false;
 		}
 	}
 
 	public void setGrid(Object object) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	public Grid createRandomGrid(int i) {
