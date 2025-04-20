@@ -2,11 +2,15 @@ package edu.gz.TDDGame.game;
 
 import edu.gz.TDDGame.maze.Grid;
 import edu.gz.TDDGame.maze.Row;
+import edu.gz.TDDGame.maze.Cell;
 import edu.gz.TDDGame.maze.CellComponents;
 import edu.gz.TDDGame.player.Movement;
 import edu.gz.TDDGame.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Game {
 	private Grid grid;
@@ -26,13 +30,20 @@ public class Game {
 
 	public boolean play(Movement movement, Player player) {
 		Row row = player.getCurrentRow();
+		Cell cell = player.getCurrentCell();
 		int colIndex = row.getIndexOfCell(player.getCurrentCell());
 		Integer rowIndex = grid.getIndexOfRow(row);
 		
+		Row targetRow;
+		Cell targetCell;
+		
 		switch (movement) {
-			case UP:				
-				if (rowIndex != null && rowIndex > 0) {
-					player.setCurrentRow(grid.getRowAt(rowIndex - 1));
+			case UP:		
+				targetRow = grid.getRowAt(rowIndex - 1);
+				targetCell = targetRow.getCellAt(colIndex);
+				
+				if (rowIndex != null && rowIndex > 0 && cell.getUp() != CellComponents.WALL && targetCell.getDown() != CellComponents.WALL) {
+					player.setCurrentRow(targetRow);
 					player.setCurrentCell(null);
 					
 					return true;
@@ -40,8 +51,11 @@ public class Game {
 				
 				return false;
 			case DOWN:
-				if (rowIndex != null && rowIndex < row.getRowSize()) {
-					player.setCurrentRow(grid.getRowAt(rowIndex + 1));
+				targetRow = grid.getRowAt(rowIndex + 1);
+				targetCell = targetRow.getCellAt(colIndex);
+				
+				if (rowIndex != null && rowIndex < row.getRowSize() && cell.getDown() != CellComponents.WALL && targetCell.getUp() != CellComponents.WALL) {
+					player.setCurrentRow(targetRow);
 					player.setCurrentCell(null);
 					
 					return true;
@@ -49,16 +63,20 @@ public class Game {
 				
 				return false;
 			case LEFT:
-				if (colIndex > 0) {
-					player.setCurrentCell(row.getCellAt(colIndex - 1));
+				targetCell = row.getCellAt(colIndex - 1);
+				
+				if (colIndex > 0 && cell.getLeft() != CellComponents.WALL && targetCell.getRight() != CellComponents.WALL) {
+					player.setCurrentCell(targetCell);
 
 					return true;
 				}
 				
 				return false;
-			case RIGHT:				
-				if (colIndex < row.getCells().size()) {
-					player.setCurrentCell(row.getCellAt(colIndex + 1));
+			case RIGHT:		
+				targetCell = row.getCellAt(colIndex + 1);
+				
+				if (colIndex < row.getCells().size() && cell.getRight() != CellComponents.WALL && targetCell.getLeft() != CellComponents.WALL) {
+					player.setCurrentCell(targetCell);
 
 					return true;
 				}
@@ -69,12 +87,12 @@ public class Game {
 		}
 	}
 
-	public void setGrid(Object object) {
-		
+	public void setGrid(Grid grid) {
+		this.grid = grid;
 	}
 
 	public Grid createRandomGrid(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		return grid;
+		
 	}
 }
