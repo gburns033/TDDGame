@@ -9,6 +9,14 @@ public class Grid {
 	public Grid(ArrayList<Row> rows) {
 		this.rows = rows;
 	}
+	
+	public Integer getIndexOfRow(Row row) {
+		return getRows().indexOf(row);
+	}
+	
+	public Row getRowAt(int index) {
+		return getRows().get(index);
+	}
 
 	public ArrayList<Row> getRows() {
 		return rows;
