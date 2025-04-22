@@ -13,24 +13,51 @@ import hw4.maze.Row;
 import hw4.player.Movement;
 import hw4.player.Player;
 
+/**
+ * The {@code Game} class represents the logic and state of a maze game.
+ * It manages the game grid, supports movement of the player, and allows
+ * creation of random maze configurations with a valid path from right to left.
+ */
 public class Game {
 	private Grid grid;
 	private int n;
 	
 	private static Random random = new Random();
 
+    /**
+     * Constructs a {@code Game} instance with a predefined {@code Grid}.
+     *
+     * @param grid the game grid
+     */
 	public Game(Grid grid) {
 		this.grid = grid;
 	}
 
+    /**
+     * Constructs a {@code Game} instance with a specified grid size.
+     *
+     * @param n the dimension of the grid (n x n)
+     */
 	public Game(int n) {
 		this.n = n;
 	}
 
+    /**
+     * Returns the current game grid.
+     *
+     * @return the grid
+     */
 	public Grid getGrid() {
 		return this.grid;
 	}
 
+    /**
+     * Executes a movement command for the given player.
+     *
+     * @param movement the direction to move (UP, DOWN, LEFT, RIGHT)
+     * @param player   the player object to move
+     * @return {@code true} if the move was successful; {@code false} otherwise
+     */
 	public boolean play(Movement movement, Player player) {
 		if (player == null || movement == null) {
 			return false;
@@ -110,10 +137,21 @@ public class Game {
 		}
 	}
 
+    /**
+     * Sets the current grid.
+     *
+     * @param grid the new grid to set
+     */
 	public void setGrid(Grid grid) {
 		this.grid = grid;
 	}
 	
+    /**
+     * Creates a random {@code Cell} with one guaranteed aperture and the remaining sides
+     * randomly assigned as either WALL or APERTURE.
+     *
+     * @return a randomly generated {@code Cell}
+     */
 	private static Cell createRandomCell() {
 	    int baseApertureIndex = random.nextInt(4);
 	    CellComponents[] components = new CellComponents[4];
@@ -129,10 +167,22 @@ public class Game {
 	    return new Cell(components[0], components[1], components[2], components[3]);
 	}
 	
+    /**
+     * Randomly selects a non-exit {@code CellComponent}, either WALL or APERTURE.
+     *
+     * @return a {@code CellComponent} that is not EXIT
+     */
 	private static CellComponents getRandomNonExitCellComponent() {
 	    return random.nextBoolean() ? CellComponents.APERTURE : CellComponents.WALL;
 	}
 	
+    /**
+     * Returns a valid neighboring step from the current position in the path grid.
+     *
+     * @param currentStep the current position as an int[2] array {row, col}
+     * @param pathGrid    the grid used to track path positions
+     * @return a valid next step {row, col}
+     */
 	private static int[] getValidNextStep(int[] currentStep, int[][] pathGrid) {	
 		int[] step = new int[2];
 		
@@ -144,6 +194,13 @@ public class Game {
 		return step;
 	}
 	
+    /**
+     * Checks whether a given step is valid in the path grid.
+     *
+     * @param step     the position to check
+     * @param pathGrid the path grid
+     * @return {@code true} if the step is valid; {@code false} otherwise
+     */
 	private static boolean isValidNextStep(int[] step, int[][] pathGrid) {
 		if (pathGrid[step[0]][step[1]] == 1) {
 			return false;
@@ -152,6 +209,14 @@ public class Game {
 		return true;
 	}
 
+    /**
+     * Generates a new random maze {@code Grid} with a guaranteed path from the
+     * right side of the grid to the left side. Each cell in the path is an aperture,
+     * and the exit is placed on the leftmost side.
+     *
+     * @param n the size of the grid (must be between 3 and 7 inclusive)
+     * @return a {@code Grid} with a valid path, or {@code null} if input is invalid
+     */
 	public Grid createRandomGrid(int n) {
 		if ( n < 3 || n > 7) {
 			return null;
@@ -259,6 +324,11 @@ public class Game {
 		return this.grid;
 	}
 	
+    /**
+     * Returns a string representation of the game.
+     *
+     * @return a string containing the grid representation
+     */
 	@Override
 	public String toString() {
 		return "Game [grid=" + grid.toString() + "]";
