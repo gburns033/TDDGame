@@ -145,26 +145,40 @@ public class Game {
 	public void setGrid(Grid grid) {
 		this.grid = grid;
 	}
-	
-    /**
-     * Creates a random {@code Cell} with one guaranteed aperture and the remaining sides
-     * randomly assigned as either WALL or APERTURE.
-     *
-     * @return a randomly generated {@code Cell}
-     */
-	private static Cell createRandomCell() {
-	    int baseApertureIndex = random.nextInt(4);
-	    CellComponents[] components = new CellComponents[4];
 
-	    for (int i = 0; i < 4; i++) {
-	        if (i == baseApertureIndex) {
-	            components[i] = CellComponents.APERTURE;
-	        } else {
-	            components[i] = getRandomNonExitCellComponent();
-	        }
-	    }
+	/**
+	 * Creates a random {@code Cell} at a given position in the grid. - Any true
+	 * border side (left/right/up/down) is set to WALL. - Exactly one *non‑border*
+	 * side is forced to APERTURE. - Other non‑border sides are randomly WALL or
+	 * APERTURE.
+	 *
+	 * @param position an int[2] = {row, col} in [0..gridSize-1]
+	 * @param gridSize the width/height of the square grid
+	 * @return a {@code Cell} with border walls and at least one aperture
+	 */
+	private static Cell createRandomCell(int[] position, int gridSize) {
+		boolean[] isEdge = { position[1] == 0, // LEFT
+				position[1] == gridSize - 1, // RIGHT
+				position[0] == 0, // UP
+				position[0] == gridSize - 1 // DOWN
+		};
 
-	    return new Cell(components[0], components[1], components[2], components[3]);
+		List<Integer> interiorSides = new ArrayList<Integer>();
+		for (int i = 0; i < 4; i++) {
+			if (!isEdge[i]) {
+				interiorSides.add(i);
+			}
+		}
+
+		int guaranteed = interiorSides.get(random.nextInt(interiorSides.size()));
+
+		CellComponents[] components = new CellComponents[4];
+		for (int i = 0; i < 4; i++) {
+			components[i] = isEdge[i] ? CellComponents.WALL
+					: (i == guaranteed ? CellComponents.APERTURE : getRandomNonExitCellComponent());
+		}
+
+		return new Cell(components[0], components[1], components[2], components[3]);
 	}
 	
     /**
