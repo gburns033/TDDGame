@@ -18,7 +18,7 @@ public class Grid {
     public Grid(ArrayList<Row> rows) {
         this.rows = rows;
     }
-
+ 
     /**
      * Returns the index of the specified row in the grid.
      *
