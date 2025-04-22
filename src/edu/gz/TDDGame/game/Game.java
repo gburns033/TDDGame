@@ -29,6 +29,10 @@ public class Game {
 	}
 
 	public boolean play(Movement movement, Player player) {
+		if (player == null) {
+			return false;
+		}
+		
 		Row row = player.getCurrentRow();
 		Cell cell = player.getCurrentCell();
 		int colIndex = row.getIndexOfCell(player.getCurrentCell());
