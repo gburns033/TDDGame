@@ -190,8 +190,8 @@ public class Game {
 		int[] step = new int[2];
 		
 		do {		
-			step[0] = random.nextInt(Math.min(0, currentStep[0] - 1),  Math.max(currentStep[0] + 1, pathGrid.length));		
-			step[1] = random.nextInt(Math.min(0, currentStep[1] - 1),  Math.max(currentStep[1] + 1, pathGrid.length));
+			step[0] = random.nextInt(Math.max(0, currentStep[0] - 1), Math.min(pathGrid.length, currentStep[0] + 2));
+			step[1] = random.nextInt(Math.max(0, currentStep[1] - 1), Math.min(pathGrid[0].length, currentStep[1] + 2));
 		} while(!isValidNextStep(step, pathGrid));
 		
 		return step;
