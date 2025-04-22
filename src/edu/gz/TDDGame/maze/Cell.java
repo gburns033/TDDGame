@@ -70,6 +70,11 @@ public class Cell {
      * @param up the new top side component
      */
     public void setUp(CellComponents up) {
+    	if (up == null) {
+    		this.up = CellComponents.WALL;
+    		return;
+    	}
+    	
         this.up = up;
     }
 
@@ -79,6 +84,11 @@ public class Cell {
      * @param down the new bottom side component
      */
     public void setDown(CellComponents down) {
+    	if (down == null) {
+    		this.down = CellComponents.WALL;
+    		return;
+    	}
+    	
         this.down = down;
     }
 
@@ -88,6 +98,11 @@ public class Cell {
      * @param left the new left side component
      */
     public void setLeft(CellComponents left) {
+    	if (left == null) { 
+    		this.left = CellComponents.WALL;
+    		return;
+    	}
+    	
         this.left = left;
     }
 
@@ -97,6 +112,11 @@ public class Cell {
      * @param right the new right side component
      */
     public void setRight(CellComponents right) {
+    	if (right == null) {
+    		this.right = CellComponents.WALL;
+    		return;
+    	}
+    	
         this.right = right;
     }
     
