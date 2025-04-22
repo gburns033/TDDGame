@@ -21,6 +21,7 @@ public class Cell {
      * @param right the component on the right side of the cell
      */
     public Cell(CellComponents left, CellComponents down, CellComponents up, CellComponents right) {
+    public Cell(CellComponents left, CellComponents right, CellComponents up, CellComponents down) {
         this.left = left;
         this.down = down;
         this.up = up;
