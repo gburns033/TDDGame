@@ -57,4 +57,9 @@ public class Player {
 	public void setCurrentCell(Cell cell) {
 		this.cell = cell;
 	}
+	
+	@Override
+	public String toString() {
+		return "Player [currentCell=" + cell.toString() + ", currentRow=" + row.toString() + "]";
+	}
 }

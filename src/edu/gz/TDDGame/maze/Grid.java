@@ -56,4 +56,23 @@ public class Grid {
     public void setRows(ArrayList<Row> rows) {
         this.rows = rows;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("Grid [rows=[");
+    	
+    	for (int i = 0; i < rows.size(); i++) {
+    		Row row = rows.get(i);
+    		sb.append(row.toString());
+    		
+    		if (i != rows.size() - 1) {
+    			sb.append(", ");
+    		} else {
+    			sb.append("]]");
+    		}
+    	}
+    	
+    	return sb.toString();
+    }
 }

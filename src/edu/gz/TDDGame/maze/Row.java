@@ -65,4 +65,23 @@ public class Row {
     public void setCells(ArrayList<Cell> cellList) {
         cells = cellList;
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("Row [cells=[");
+    	
+    	for (int i = 0; i < cells.size(); i++) {
+    		Cell cell = cells.get(i);
+    		sb.append(cell.toString());
+    		
+    		if (i != cells.size() - 1) {
+    			sb.append(", ");
+    		} else {
+    			sb.append("]]");
+    		}
+    	}
+    	
+    	return sb.toString();
+    }
 }

@@ -98,4 +98,9 @@ public class Cell {
     public void setRight(CellComponents right) {
         this.right = right;
     }
+    
+    @Override
+    public String toString() {
+    	return "Cell [left=" + left + ", right=" + right + ", up=" + up + ", down=" + down + "]";
+    }
 }
