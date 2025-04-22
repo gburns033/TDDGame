@@ -99,4 +99,9 @@ public class Game {
 		return grid;
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "Game [grid=" + grid.toString() + "]";
+	}
 }
