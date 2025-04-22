@@ -1,10 +1,8 @@
 package hw4.game;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
-import java.util.Vector;
+import java.util.Stack;
 
 import hw4.maze.Cell;
 import hw4.maze.CellComponents;
@@ -184,19 +182,40 @@ public class Game {
 	}
 
 	/**
-	 * Returns a valid neighboring step from the current position in the path grid.
+	 * Returns a valid neighboring step from the current position in the path grid,
+	 * ensuring that the new step has not been visited before and is a valid step in
+	 * the grid.
 	 *
 	 * @param currentStep the current position as an int[2] array {row, col}
 	 * @param pathGrid    the grid used to track path positions
-	 * @return a valid next step {row, col}
+	 * @param visited     a boolean 2D array indicating which cells have already
+	 *                    been visited.
+	 * @return an int[2] array representing the next valid step {row, col}. If no
+	 *         valid step is found, it returns the current step as the default to
+	 *         indicate no progress made.
 	 */
-	private static int[] getValidNextStep(int[] currentStep, int[][] pathGrid) {
+	private static int[] getValidNextStep(int[] currentStep, int[][] pathGrid, boolean[][] visited) {
 		int[] step = new int[2];
+		boolean foundValidStep = false;
 
-		do {
+		for (int i = 0; i < 20; i++) {
 			step[0] = random.nextInt(Math.max(0, currentStep[0] - 1), Math.min(pathGrid.length, currentStep[0] + 2));
 			step[1] = random.nextInt(Math.max(0, currentStep[1] - 1), Math.min(pathGrid[0].length, currentStep[1] + 2));
-		} while (!isValidNextStep(step, pathGrid));
+
+			if (visited[step[0]][step[1]]) {
+				continue;
+			}
+
+			if (isValidNextStep(step, pathGrid)) {
+				visited[step[0]][step[1]] = true;
+				foundValidStep = true;
+				break;
+			}
+		}
+
+		if (!foundValidStep) {
+			return currentStep;
+		}
 
 		return step;
 	}
@@ -233,11 +252,29 @@ public class Game {
 
 		int[] currentStep = { random.nextInt(n), n - 1 };
 
-		while (currentStep[1] != 0) {
+		boolean[][] visited = new boolean[n][n];
+		visited[currentStep[0]][currentStep[1]] = true;
+
+		Stack<int[]> pathStack = new Stack<>();
+		pathStack.push(currentStep);
+
+		while (!pathStack.isEmpty()) {
+			currentStep = pathStack.peek();
 			pathGrid[currentStep[0]][currentStep[1]] = 1;
 
-			int[] nextStep = getValidNextStep(currentStep, pathGrid);
-			currentStep = nextStep;
+			if (currentStep[1] == 0) {
+				pathGrid[currentStep[0]][currentStep[1]] = 2;
+				break;
+			}
+
+			int[] nextStep = getValidNextStep(currentStep, pathGrid, visited);
+
+			if (nextStep[0] == currentStep[0] && nextStep[1] == currentStep[1]) {
+				pathStack.pop();
+			} else {
+				pathStack.push(nextStep);
+				visited[nextStep[0]][nextStep[1]] = true;
+			}
 		}
 
 		pathGrid[currentStep[0]][currentStep[1]] = 2;
