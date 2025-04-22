@@ -160,45 +160,28 @@ public class Game {
 	 * @return a {@code Cell} with border walls and at least one aperture
 	 */
 	private static Cell createRandomCell(int[] position, int gridSize) {
-		// 0=LEFT, 1=RIGHT, 2=UP, 3=DOWN
-		boolean[] isEdge = { position[1] == 0, // leftmost col → LEFT is WALL
-				position[1] == gridSize - 1, // rightmost col → RIGHT is WALL
-				position[0] == 0, // top row → UP is WALL
-				position[0] == gridSize - 1 // bottom row → DOWN is WALL
+		boolean[] isEdge = { position[1] == 0, // LEFT
+				position[1] == gridSize - 1, // RIGHT
+				position[0] == 0, // UP
+				position[0] == gridSize - 1 // DOWN
 		};
 
-		// components[0]=LEFT, [1]=RIGHT, [2]=UP, [3]=DOWN
-		CellComponents[] components = new CellComponents[4];
-
-		// 1) Collect all *interior* side indices
-		List<Integer> interiorSides = new ArrayList<>(4);
+		List<Integer> interiorSides = new ArrayList<Integer>();
 		for (int i = 0; i < 4; i++) {
 			if (!isEdge[i]) {
 				interiorSides.add(i);
 			}
 		}
 
-		// 2) Choose one interior side to guarantee as APERTURE
 		int guaranteed = interiorSides.get(random.nextInt(interiorSides.size()));
 
-		// 3) Fill in each side
+		CellComponents[] components = new CellComponents[4];
 		for (int i = 0; i < 4; i++) {
-			if (isEdge[i]) {
-				components[i] = CellComponents.WALL;
-			} else if (i == guaranteed) {
-				components[i] = CellComponents.APERTURE;
-			} else {
-				components[i] = getRandomNonExitCellComponent();
-			}
+			components[i] = isEdge[i] ? CellComponents.WALL
+					: (i == guaranteed ? CellComponents.APERTURE : getRandomNonExitCellComponent());
 		}
 
-		// Now components are in [LEFT, RIGHT, UP, DOWN] order,
-		// so we can wire them directly into the constructor:
-		return new Cell(components[0], // left
-				components[1], // right
-				components[2], // up
-				components[3] // down
-		);
+		return new Cell(components[0], components[1], components[2], components[3]);
 	}
 
 	/**
