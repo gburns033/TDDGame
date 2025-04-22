@@ -29,7 +29,7 @@ public class Game {
 	}
 
 	public boolean play(Movement movement, Player player) {
-		if (player == null) {
+		if (player == null || movement == null) {
 			return false;
 		}
 		
