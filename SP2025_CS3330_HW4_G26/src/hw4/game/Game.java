@@ -103,9 +103,13 @@ public class Game {
 				}
 				
 				return false;
-			case LEFT:
+			case LEFT:				
 				if (colIndex == 0 && cell.getLeft() == CellComponents.EXIT) {
 					return true;
+				}
+				
+				if (colIndex - 1 < 0) {
+					return false;
 				}
 				
 				targetCell = row.getCellAt(colIndex - 1);
