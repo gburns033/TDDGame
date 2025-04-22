@@ -20,7 +20,6 @@ import hw4.player.Player;
  */
 public class Game {
 	private Grid grid;
-	private int n;
 	
 	private static Random random = new Random();
 
@@ -39,7 +38,7 @@ public class Game {
      * @param n the dimension of the grid (n x n)
      */
 	public Game(int n) {
-		this.n = n;
+		this.grid = createRandomGrid(n);
 	}
 
     /**
