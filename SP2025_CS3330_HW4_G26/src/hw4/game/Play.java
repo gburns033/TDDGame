@@ -10,8 +10,18 @@ import hw4.maze.Row;
 import hw4.player.Movement;
 import hw4.player.Player;
 
+/**
+ * The {@code Play} class serves as the main entry point for the maze game.
+ * It handles player input, game loop control, movement logic, and prints out
+ * the grid after each move.
+ */
 public class Play {
 
+    /**
+     * The main method that runs the maze game.
+     * Prompts the user for the grid size, initializes the game and player,
+     * then loops through player movement until the player escapes the maze.
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int size;
@@ -62,6 +72,14 @@ public class Play {
         scanner.close();
     }
 
+    /**
+     * Processes a movement input and attempts to move the player in the given direction.
+     *
+     * @param move the movement input (1 = up, 2 = down, 3 = left, 4 = right)
+     * @param game the current game instance
+     * @param player the player object
+     * @return true if the move is valid and executed, false otherwise
+     */
     public static boolean moveCheck(int move, Game game, Player player) {
         switch (move) {
             case 1:
@@ -77,6 +95,15 @@ public class Play {
         }
     }
 
+    /**
+     * Prints the current state of the game grid. Marks the player's position with "A",
+     * standard cells with "S", and the exit cell with "E".
+     *
+     * @param game the current game instance
+     * @param player the player object
+     * @param exitRow the row containing the exit (if detected)
+     * @param exitCell the cell containing the exit (if detected)
+     */
     public static void printGame(Game game, Player player, Row exitRow, Cell exitCell) {
         Grid grid = game.getGrid();
         ArrayList<Row> rows = grid.getRows();
@@ -105,6 +132,12 @@ public class Play {
         }
     }
 
+    /**
+     * Checks whether the given cell has an exit component on any of its four sides.
+     *
+     * @param cell the cell to check
+     * @return true if the cell borders the maze exit, false otherwise
+     */
     public static boolean checkForExit(Cell cell) {
         return cell.getUp() == CellComponents.EXIT
             || cell.getDown() == CellComponents.EXIT
